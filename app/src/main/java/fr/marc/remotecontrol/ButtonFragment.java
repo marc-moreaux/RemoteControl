@@ -51,18 +51,18 @@ public class ButtonFragment extends Fragment implements View.OnClickListener {
 
     // Own classes
     public void onClick(View v) {
-        int trigreredId = v.getId();
+        int triggeredId = v.getId();
 
 
-        if (trigreredId == R.id.button_copy) {
+        if (triggeredId == R.id.button_copy)
             sendKey("[['ctrl','c']]");
-        } else if (trigreredId == R.id.button_paste) {
+        else if (triggeredId == R.id.button_paste)
             sendKey("[['ctrl','v']]");
-        } else if (trigreredId == R.id.button_undo) {
+        else if (triggeredId == R.id.button_undo)
             sendKey("[['ctrl','z']]");
-        } else if (trigreredId == R.id.button_redo2) {
+        else if (triggeredId == R.id.button_redo2)
             sendKey("[['ctrl','u']]");
-        }
+
     }
 
     private boolean sendKey(String keys){
