@@ -1,22 +1,16 @@
 package fr.marc.remotecontrol;
 
-import android.app.Activity;
 import android.app.Fragment;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import java.io.BufferedWriter;
-import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 
 /**
@@ -25,10 +19,8 @@ import java.net.UnknownHostException;
 public class ButtonFragment extends Fragment implements View.OnClickListener {
 
     final static String ARG_SOCKET= "position";
+    Socket socket;
 
-    static Socket socket;
-    static int SERVERPORT = 64696;
-    static String SERVER_IP = "192.168.1.39";
 
 
     @Override
@@ -38,25 +30,15 @@ public class ButtonFragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_buttons, container, false);
 
-        // start Thread for client connection
-        new Thread(new ClientThread()).start();
+        // Accessor to socket
+        SocketSingleton mSocketSingleton = SocketSingleton.getInstance();
+        socket = mSocketSingleton.getSocket();
 
-        // Declare actions taken on button click
-        Button buttonCopy = (Button) rootView.findViewById(R.id.button_copy);
-        buttonCopy.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Log.e("buttonApp", "onclick listener");
-                try {
-                    PrintWriter out = new PrintWriter(new BufferedWriter(
-                            new OutputStreamWriter(socket.getOutputStream())), true);
-                    out.println("[['ctrl','c']]");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        Button b = (Button) rootView.findViewById(R.id.button_copy);
-        b.setOnClickListener(this);
+        // set click listener for buttons
+        rootView.findViewById(R.id.button_copy ).setOnClickListener(this);
+        rootView.findViewById(R.id.button_paste).setOnClickListener(this);
+        rootView.findViewById(R.id.button_undo ).setOnClickListener(this);
+        rootView.findViewById(R.id.button_redo2).setOnClickListener(this);
 
 
         return rootView;
@@ -68,57 +50,33 @@ public class ButtonFragment extends Fragment implements View.OnClickListener {
 
 
     // Own classes
-    class ClientThread implements Runnable {
-        @Override
-        public void run() {
-            try {
-                InetAddress serverAddr = InetAddress.getByName(SERVER_IP);
-                socket = new Socket(serverAddr, SERVERPORT);
-            } catch (UnknownHostException e1) {
-                e1.printStackTrace();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-
-        }
-    }
-
-
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.button_copy:
-                try {
-                    PrintWriter out = new PrintWriter(new BufferedWriter(
-                            new OutputStreamWriter(socket.getOutputStream())), true);
-                    out.println("[['ctrl','v']]");
-                } catch (Exception e) {e.printStackTrace();}
-                break;
+        int trigreredId = v.getId();
 
-            case  R.id.button_paste :
 
+        if (trigreredId == R.id.button_copy) {
+            sendKey("[['ctrl','c']]");
+        } else if (trigreredId == R.id.button_paste) {
+            sendKey("[['ctrl','v']]");
+        } else if (trigreredId == R.id.button_undo) {
+            sendKey("[['ctrl','z']]");
+        } else if (trigreredId == R.id.button_redo2) {
+            sendKey("[['ctrl','u']]");
         }
     }
 
-
-    //
-    // The buttons have been declared in the xml
-    // Here are the actions corresponding to each of them
-    //
-
-    public void do_undo(View v){
+    private boolean sendKey(String keys){
+        Log.d("MyTag", "sending : "+keys);
         try {
             PrintWriter out = new PrintWriter(new BufferedWriter(
                     new OutputStreamWriter(socket.getOutputStream())), true);
-            out.println("[['ctrl','z']]");
-        } catch (Exception e) {e.printStackTrace();}
-    }
-
-    public void do_redo(View v){
-        try {
-            PrintWriter out = new PrintWriter(new BufferedWriter(
-                    new OutputStreamWriter(socket.getOutputStream())), true);
-            out.println("[['ctrl','y']]");
-        } catch (Exception e) {e.printStackTrace();}
+            out.println(keys);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("MyTag", "ERROR: " + keys+ " wasn't sent");
+            return false;
+        }
+        return true;
     }
 
 }
