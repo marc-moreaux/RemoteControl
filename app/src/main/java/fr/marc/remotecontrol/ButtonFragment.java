@@ -1,11 +1,14 @@
 package fr.marc.remotecontrol;
 
+import android.app.ActionBar;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import java.io.BufferedWriter;
 import java.io.OutputStreamWriter;
@@ -29,6 +32,33 @@ public class ButtonFragment extends Fragment implements View.OnClickListener {
 
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_buttons, container, false);
+
+
+        RelativeLayout layout = (RelativeLayout)rootView.findViewById(R.id.buttonsContainer);
+
+
+        // add a fucking button !!!
+        float scale = getActivity().getResources().getDisplayMetrics().density;
+        Button newBtn = new Button(getActivity());
+        newBtn.setLayoutParams(new RelativeLayout.LayoutParams(
+                ActionBar.LayoutParams.WRAP_CONTENT,
+                ActionBar.LayoutParams.WRAP_CONTENT));
+
+        RelativeLayout.LayoutParams params = null;
+        params = (RelativeLayout.LayoutParams)newBtn.getLayoutParams();
+        if(params==null)
+            Log.d("myTag", "lol");
+        params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        params.addRule(RelativeLayout.ALIGN_PARENT_START);
+        params.setMargins(0, 5, 0, 0);
+        newBtn.setLayoutParams(params);
+
+        newBtn.setMinHeight((int)(100 * scale + .5f));
+        newBtn.setMinWidth((int)(100 * scale + .5f));
+        newBtn.setText("Button");
+
+        layout.addView(newBtn);
+
 
         // Accessor to socket
         SocketSingleton mSocketSingleton = SocketSingleton.getInstance();

@@ -1,8 +1,8 @@
 package fr.marc.remotecontrol;
 
-import android.app.ActionBar;
 import android.content.Context;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -49,28 +49,41 @@ public class ButtonAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
 
-        float scale = mContext.getResources().getDisplayMetrics().density;
-        Button newBtn = new Button(mContext);
-        newBtn.setLayoutParams(new RelativeLayout.LayoutParams(
-                ActionBar.LayoutParams.WRAP_CONTENT,
-                ActionBar.LayoutParams.WRAP_CONTENT));
+        // Get the button style
+        RelativeLayout mView = (RelativeLayout)
+                LayoutInflater.from(mContext).inflate(R.layout.fragment_buttons, null);
 
-        RelativeLayout.LayoutParams params = null;
-        params = (RelativeLayout.LayoutParams)newBtn.getLayoutParams();
-        if(params==null)
-            Log.e("remoteControlTag", "Error in null param for button");
-        params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-        params.addRule(RelativeLayout.ALIGN_PARENT_START);
-        params.setMargins(0, 5, 0, 0);
-        newBtn.setLayoutParams(params);
+        Button mBtn = (Button) mView.findViewById(R.id.general_button);
+        mView.removeView(mBtn);
 
-        newBtn.setMinHeight((int) (100 * scale + .5f));
-        newBtn.setMinWidth((int) (100 * scale + .5f));
-        newBtn.setText(actions[position][0]);
-        newBtn.setOnClickListener(new MyOnClickListener(actions[position][1]));
-        newBtn.setId(position);
+        mBtn.setText(actions[position][0]);
+        mBtn.setOnClickListener(new MyOnClickListener(actions[position][1]));
+        mBtn.setId(position);
 
-        return newBtn;
+
+
+//        NOW USELESS BECAUSE OF LAYOUT INFLATION
+//        float scale = mContext.getResources().getDisplayMetrics().density;
+//        Button newBtn = new Button(mContext);
+//        newBtn.setLayoutParams(new RelativeLayout.LayoutParams(
+//                ActionBar.LayoutParams.WRAP_CONTENT,
+//                ActionBar.LayoutParams.WRAP_CONTENT));
+//
+//        RelativeLayout.LayoutParams params = null;
+//        params = (RelativeLayout.LayoutParams)newBtn.getLayoutParams();
+//        if(params==null)
+//            Log.e("remoteControlTag", "Error in null param for button");
+//        params.setMargins(0, 5, 0, 0);
+//        newBtn.setLayoutParams(params);
+//
+//        newBtn.setMinHeight((int) (100 * scale + .5f));
+//        newBtn.setMinWidth((int) (100 * scale + .5f));
+//        newBtn.setText(actions[position][0]);
+//        newBtn.setOnClickListener(new MyOnClickListener(actions[position][1]));
+//        newBtn.setId(position);
+
+
+        return mBtn;
     }
 }
 

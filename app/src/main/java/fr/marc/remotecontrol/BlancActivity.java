@@ -17,6 +17,8 @@ public class BlancActivity extends Activity {
 
     // variable declaration
 
+    
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +28,7 @@ public class BlancActivity extends Activity {
         if (savedInstanceState == null) {
 
             // add button fragment
-            ButtonFragment a = new ButtonFragment();
+            GridFragment a = new GridFragment();
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.add(R.id.container,a);
             transaction.addToBackStack(null);
