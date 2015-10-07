@@ -17,7 +17,7 @@ public class BlancActivity extends Activity {
 
     // variable declaration
 
-    
+
 
 
     @Override

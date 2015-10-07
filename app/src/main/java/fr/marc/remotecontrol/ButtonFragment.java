@@ -3,6 +3,7 @@ package fr.marc.remotecontrol;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,12 +19,16 @@ import java.net.Socket;
 
 /**
  * A simple {@link Fragment} subclass.
+ *
+ * In this fragment we instantiate a fragment by inflating a simple relativeLayout in which
+ * we inflate and create programmatically buttons.
  */
 public class ButtonFragment extends Fragment implements View.OnClickListener {
 
     final static String ARG_SOCKET= "position";
     Socket socket;
 
+    private RecyclerView mRecyclerView;
 
 
     @Override

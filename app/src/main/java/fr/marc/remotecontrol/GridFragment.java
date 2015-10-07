@@ -10,6 +10,9 @@ import android.widget.GridView;
 
 /**
  * A simple {@link Fragment} subclass.
+ *
+ * In this fragment we instantiate a fragment by inflating a simple GridView in which
+ * we add buttons through an adapter.
  */
 public class GridFragment extends Fragment {
 
