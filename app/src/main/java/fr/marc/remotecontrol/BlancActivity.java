@@ -11,6 +11,8 @@ import android.os.IBinder;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+
 import java.net.Socket;
 
 public class BlancActivity extends Activity {
@@ -28,9 +30,9 @@ public class BlancActivity extends Activity {
         if (savedInstanceState == null) {
 
             // add button fragment
-            GridFragment a = new GridFragment();
+            RecyclerFragment mFragment = new RecyclerFragment();
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.add(R.id.container,a);
+            transaction.add(R.id.container, mFragment);
             transaction.addToBackStack(null);
             transaction.commit();
 
